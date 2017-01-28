@@ -13,13 +13,30 @@ class User < ApplicationRecord
 
   def assign_oauth_attrs(params = {})
     self.name = params['name']
-    self.location = params['location']
+    self.location = oauth_location_for provider, params['location']
     self.image_url = params['image']
 
-    self.url = if params['urls']
-                 params['urls'][provider.capitalize]
-               else
-                 ''
-               end
+    self.url = oauth_url_for provider, params['urls']
+  end
+
+  private
+
+  def oauth_location_for(provider, hash)
+    case provider
+    when 'linkedin' then hash['name']
+    else hash
+    end
+  end
+
+  def oauth_url_for(provider, hash)
+    case provider
+    when 'linkedin' then hash['public_profile']
+    else
+      if hash
+        hash[provider.capitalize]
+      else
+        ''
+      end
+    end
   end
 end
