@@ -18,6 +18,10 @@ gem 'jbuilder', '~> 2.5'
 
 gem 'bootstrap-sass'
 
+gem 'omniauth-twitter'
+
+gem 'figaro'
+
 group :development, :test do
   gem 'byebug', platform: :mri
 end
